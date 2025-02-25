@@ -6,17 +6,21 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="microservice.eureka" />
-        <module name="microservice.config" />
-        <module name="microservice.gateway" />
+        <module name="microservice.user" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="microservice.config" target="17" />
+      <module name="microservice.eureka" target="17" />
+      <module name="microservice.gateway" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="microservice.config" options="-parameters" />
       <module name="microservice.eureka" options="-parameters" />
       <module name="microservice.gateway" options="-parameters" />
+      <module name="microservice.user" options="-parameters" />
     </option>
   </component>
 </project>
