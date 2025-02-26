@@ -28,6 +28,6 @@ public class Task {
     @Column(nullable = false)
     private TaskStatus status;
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 }
