@@ -7,10 +7,10 @@
 		<artifactId>PruebaMicroservices</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>com.microservice.user</groupId>
-	<artifactId>microservice.user</artifactId>
+	<groupId>com.microservice.task</groupId>
+	<artifactId>microservice.task</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>microservice.user</name>
+	<name>microservice.task</name>
 	<description>Prueba Tecnica</description>
 	<url/>
 	<licenses>
