@@ -1,5 +1,6 @@
 package com.microservice.user.persistence;
 
+import com.microservice.user.entities.RolUser;
 import com.microservice.user.entities.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -15,4 +16,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.taskId = :idTask")
     List<User> findAllUser(@Param("idTask") Long idTask);
 
+    List<User> findByRole(RolUser role);
 }
