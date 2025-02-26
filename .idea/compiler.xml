@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="microservice.user" />
         <module name="microservice.task" />
+        <module name="microservice.gateway" />
       </profile>
     </annotationProcessing>
   </component>
