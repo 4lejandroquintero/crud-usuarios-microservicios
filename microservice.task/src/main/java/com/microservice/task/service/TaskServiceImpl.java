@@ -1,22 +1,17 @@
 package com.microservice.task.service;
 
-<<<<<<< HEAD
+
 import com.microservice.task.dto.TaskDto;
 import com.microservice.task.entities.Task;
 import com.microservice.task.entities.TaskStatus;
 import com.microservice.task.persistence.ITaskRepository;
 import lombok.RequiredArgsConstructor;
-=======
+
 import com.microservice.task.client.UserClient;
-import com.microservice.task.dto.TaskDto;
 import com.microservice.task.dto.UserDto;
-import com.microservice.task.entities.Task;
-import com.microservice.task.entities.TaskStatus;
 import com.microservice.task.http.response.UsersByTaskResponse;
-import com.microservice.task.persistence.ITaskRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> feature/user-service
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,17 +22,15 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class TaskServiceImpl implements ITaskService {
 
-<<<<<<< HEAD
-    private final ITaskRepository taskRepository;
 
-=======
+
     @Autowired
     private final ITaskRepository taskRepository;
 
     @Autowired
     private UserClient userClient;
 
->>>>>>> feature/user-service
+
     @Override
     public TaskDto createTask(TaskDto taskDto) {
         Task task = Task.builder()
@@ -95,6 +88,16 @@ public class TaskServiceImpl implements ITaskService {
         taskRepository.deleteById(id);
     }
 
+    @Override
+    public List<Task> findAll() {
+        return (List<Task>) taskRepository.findAll();
+    }
+
+    @Override
+    public Task finById(Long id) {
+        return taskRepository.findById(id).orElseThrow();
+    }
+
     private TaskDto mapToDto(Task task) {
         return TaskDto.builder()
                 .id(task.getId())
@@ -104,17 +107,16 @@ public class TaskServiceImpl implements ITaskService {
                 .userId(task.getUserId())
                 .build();
     }
-<<<<<<< HEAD
-=======
+
 
     @Override
     public UsersByTaskResponse findUsersByIdTask(Long idTask) {
+        Task task = taskRepository.findById(idTask)
+                .orElseThrow(() -> new RuntimeException("Tarea no encontrada con ID: " + idTask));
 
-        // Consultar la task
-        Task task = taskRepository.findById(idTask).orElse(new Task());
+        // Obtener los usuarios con id y rol
+        List<UserDto> userDtoList = userClient.findAllUserByTask(idTask);
 
-        // Obtener los usuarios
-        List<UserDto> userDtoList = userClient.findAllUsersByTask(idTask);
         return UsersByTaskResponse.builder()
                 .title(task.getTitle())
                 .status(task.getStatus())
@@ -123,5 +125,5 @@ public class TaskServiceImpl implements ITaskService {
     }
 
 
->>>>>>> feature/user-service
+
 }

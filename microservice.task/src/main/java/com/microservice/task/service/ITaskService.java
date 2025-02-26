@@ -1,13 +1,10 @@
 package com.microservice.task.service;
 
 
-
 import com.microservice.task.dto.TaskDto;
-<<<<<<< HEAD
-=======
-import com.microservice.task.dto.UserDto;
+import com.microservice.task.entities.Task;
 import com.microservice.task.http.response.UsersByTaskResponse;
->>>>>>> feature/user-service
+
 
 import java.util.List;
 
@@ -18,8 +15,8 @@ public interface ITaskService {
     List<TaskDto> getTasksByUserId(Long userId);
     TaskDto updateTask(Long id, TaskDto taskDto);
     void deleteTask(Long id);
-<<<<<<< HEAD
-=======
+    List<Task> findAll();
+    Task finById(Long id);
     UsersByTaskResponse findUsersByIdTask(Long idTask);
->>>>>>> feature/user-service
+
 }

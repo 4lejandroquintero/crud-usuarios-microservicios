@@ -1,14 +1,12 @@
 package com.microservice.task.dto;
 
-<<<<<<< HEAD
-public class TaskDto {
-}
-=======
+
 import com.microservice.task.entities.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Data
 @NoArgsConstructor
@@ -21,4 +19,4 @@ public class TaskDto {
     private TaskStatus status;
     private Long userId;
 }
->>>>>>> feature/user-service
+

@@ -1,8 +1,6 @@
 package com.microservice.task.http.response;
 
-<<<<<<< HEAD
-public class UsersByTaskResponse {
-=======
+
 import com.microservice.task.dto.UserDto;
 import com.microservice.task.entities.TaskStatus;
 import lombok.AllArgsConstructor;
@@ -22,5 +20,5 @@ public class UsersByTaskResponse {
     private TaskStatus status;
     private List<UserDto> userDTOList;
 
->>>>>>> feature/user-service
+
 }
