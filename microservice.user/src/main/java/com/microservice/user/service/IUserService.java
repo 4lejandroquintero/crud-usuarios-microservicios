@@ -12,7 +12,7 @@ public interface IUserService {
 
     void save(User user);
 
-
+    List<User> findByIdTask(Long idTask);
 
 
 }

@@ -29,5 +29,10 @@ public class UserServiceImpl implements IUserService{
         userRepository.save(user);
     }
 
+    @Override
+    public List<User> findByIdTask(Long idTask) {
+        return userRepository.findAllUser(idTask);
+    }
+
 
 }

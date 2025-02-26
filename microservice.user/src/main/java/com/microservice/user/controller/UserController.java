@@ -30,5 +30,8 @@ public class UserController {
         return ResponseEntity.ok(iUserService.findById(id));
     }
 
-
+    @GetMapping("/search-by-task/{idTask}")
+    public ResponseEntity<?> findByIdTask(@PathVariable Long idTask){
+        return ResponseEntity.ok(iUserService.findByIdTask(idTask));
+    }
 }

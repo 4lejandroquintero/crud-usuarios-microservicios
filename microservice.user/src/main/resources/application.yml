@@ -8,11 +8,7 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/prueba-microservicio
-<<<<<<< HEAD
-    username: postgre
-=======
     username: postgres
->>>>>>> feature/user-service
     password: Alejandro1996nal
   jpa:
     hibernate:
