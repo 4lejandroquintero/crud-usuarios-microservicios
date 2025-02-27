@@ -3,6 +3,8 @@ package com.microservice.user.controller;
 import com.microservice.user.entities.RolUser;
 import com.microservice.user.entities.User;
 import com.microservice.user.service.IUserService;
+import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,12 @@ public class UserController {
 
     @Autowired
     private IUserService iUserService;
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(iUserService.findAll());
+    }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
@@ -33,15 +41,9 @@ public class UserController {
         return ResponseEntity.ok(iUserService.findById(id));
     }
 
-    @GetMapping("/search-by-task/{idTask}")
-    public ResponseEntity<?> findByIdTask(@PathVariable Long idTask){
-        return ResponseEntity.ok(iUserService.findByIdTask(idTask));
-    }
-
     @PutMapping("/update/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        return ResponseEntity.ok(iUserService.updateUser(id, user));
-    }
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
+        return ResponseEntity.ok(iUserService.updateUser(id, user));    }
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -49,8 +51,8 @@ public class UserController {
         iUserService.deleteUser(id);
     }
 
-    @GetMapping("/search-by-role/{role}")
-    public ResponseEntity<List<User>> getUsersByRole(@PathVariable RolUser role) {
-        return ResponseEntity.ok(iUserService.getUsersByRole(role));
+    @GetMapping("/search-by-role/{roles}")
+    public ResponseEntity<List<User>> getUsersByRoles(@PathVariable RolUser roles) {
+        return ResponseEntity.ok(iUserService.getUsersByRoles(roles));
     }
 }

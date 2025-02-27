@@ -2,6 +2,7 @@ package com.microservice.user.service;
 
 import com.microservice.user.entities.RolUser;
 import com.microservice.user.entities.User;
+import com.microservice.user.exception.entities.EntityNotFoundException;
 import com.microservice.user.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements IUserService{
     @Override
     public User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
     }
 
     @Override
@@ -30,39 +31,32 @@ public class UserServiceImpl implements IUserService{
         userRepository.save(user);
     }
 
-    @Override
-    public List<User> findByIdTask(Long idTask) {
-        return userRepository.findAllUser(idTask);
-    }
 
     @Override
     public User updateUser(Long id, User user) {
         User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
 
         existingUser.setFullName(user.getFullName());
         existingUser.setEmail(user.getEmail());
         existingUser.setPassword(user.getPassword());
-        existingUser.setRole(user.getRole());
-
-
+        existingUser.setRoles(user.getRoles());
         return userRepository.save(existingUser);
     }
 
     @Override
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("Usuario no encontrado con ID: " + id);
+            throw new EntityNotFoundException("User not found with id: " + id);
         }
 
         userRepository.deleteById(id);
     }
 
     @Override
-    public List<User> getUsersByRole(RolUser role) {
-        return userRepository.findByRole(role);
+    public List<User> getUsersByRoles(RolUser roles) {
+        return userRepository.findByRoles(roles);
     }
-
 
 }

@@ -13,11 +13,9 @@ public interface IUserService {
 
     void save(User user);
 
-    List<User> findByIdTask(Long idTask);
-
     User updateUser(Long id, User user);
 
     void deleteUser(Long id);
 
-    List<User> getUsersByRole(RolUser role);
+    List<User> getUsersByRoles(RolUser roles);
 }

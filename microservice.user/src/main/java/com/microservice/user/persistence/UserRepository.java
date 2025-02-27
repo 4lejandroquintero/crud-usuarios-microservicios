@@ -2,6 +2,7 @@ package com.microservice.user.persistence;
 
 import com.microservice.user.entities.RolUser;
 import com.microservice.user.entities.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -11,10 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT u FROM User u WHERE u.taskId = :idTask")
-    List<User> findAllUser(@Param("idTask") Long idTask);
+    User findByEmail(String email);
 
-    List<User> findByRole(RolUser role);
+    List<User> findByRoles(RolUser roles);
 }
