@@ -23,11 +23,13 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="microservice.authsercvice" target="17" />
       <module name="microservice.oauth" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="microservice.authsercvice" options="-parameters" />
       <module name="microservice.config" options="-parameters" />
       <module name="microservice.eureka" options="-parameters" />
       <module name="microservice.gateway" options="-parameters" />
