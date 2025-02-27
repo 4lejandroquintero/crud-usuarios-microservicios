@@ -8,17 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.List;
 
 @Service
 public class TaskServiceImpl implements ITaskService {
 
-
-
     @Autowired
     private final ITaskRepository taskRepository;
-
 
     @Autowired
     public TaskServiceImpl(ITaskRepository taskRepository) {
@@ -66,9 +62,9 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     @Override
-    public boolean isUserAssigned(Long taskId, Principal principal) {
+    public boolean isUserAssigned(Long taskId, Long userId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new EntityNotFoundException("Task not found with id: " + taskId));
-        return task.getAssignedUserId().equals(Long.valueOf(principal.getName()));
+        return task.getAssignedUserId().equals(userId);
     }
 }
