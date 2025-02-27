@@ -1,7 +1,6 @@
 package com.microservice.task.controller;
 
 import com.microservice.task.entities.Task;
-import com.microservice.task.service.ITaskService;
 import com.microservice.task.service.TaskServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
