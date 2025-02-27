@@ -11,7 +11,7 @@ public interface IUserService {
 
     User findById(Long id);
 
-    void save(User user);
+    User save(User user);
 
     User updateUser(Long id, User user);
 

@@ -19,16 +19,14 @@ public class UserController {
     @Autowired
     private IUserService iUserService;
 
-    @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/all")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(iUserService.findAll());
     }
 
-    @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void saveUser(@RequestBody User user){
-        iUserService.save(user);
+    @PostMapping("/admin/create")
+    public ResponseEntity<User> saveUser(@RequestBody User user){
+        return ResponseEntity.ok(iUserService.save(user));
     }
 
     @GetMapping("/all")
@@ -47,8 +45,9 @@ public class UserController {
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         iUserService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/search-by-role/{roles}")
