@@ -38,9 +38,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<RolUser> roles;
 
-    @Column(name = "task_id", nullable = true)
-    private Long taskId;
-
     public boolean hasRole(RolUser role) {
         return roles.contains(role);
     }
