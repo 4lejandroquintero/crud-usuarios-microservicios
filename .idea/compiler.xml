@@ -22,12 +22,16 @@
         <module name="microservice.user" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="microservice.oauth" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="microservice.config" options="-parameters" />
       <module name="microservice.eureka" options="-parameters" />
       <module name="microservice.gateway" options="-parameters" />
+      <module name="microservice.oauth" options="-parameters" />
       <module name="microservice.task" options="-parameters" />
       <module name="microservice.user" options="-parameters" />
     </option>
