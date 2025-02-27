@@ -1,22 +1,17 @@
 package com.microservice.task.service;
 
-
-import com.microservice.task.dto.TaskDto;
 import com.microservice.task.entities.Task;
-import com.microservice.task.http.response.UsersByTaskResponse;
 
-
+import java.security.Principal;
 import java.util.List;
 
 public interface ITaskService {
-    TaskDto createTask(TaskDto taskDto);
-    List<TaskDto> getAllTasks();
-    TaskDto getTaskById(Long id);
-    List<TaskDto> getTasksByUserId(Long userId);
-    TaskDto updateTask(Long id, TaskDto taskDto);
+    List<Task> getAllTasks();
+    Task getTaskById(Long id);
+    Task createTask(Task task);
+    Task updateTask(Long id, Task task);
     void deleteTask(Long id);
-    List<Task> findAll();
-    Task finById(Long id);
-    UsersByTaskResponse findUsersByIdTask(Long idTask);
+    List<Task> getTasksByUserId(Long userId);
+    boolean isUserAssigned(Long taskId, Principal principal);
 
 }

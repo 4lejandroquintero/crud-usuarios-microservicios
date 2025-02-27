@@ -1,10 +1,14 @@
 package com.microservice.task.controller;
 
-
-import com.microservice.task.dto.TaskDto;
+import com.microservice.task.entities.Task;
 import com.microservice.task.service.ITaskService;
+import com.microservice.task.service.TaskServiceImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,43 +18,46 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskController {
 
-    private final ITaskService taskService;
-
-    @PostMapping("/create")
-    public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
-        return ResponseEntity.ok(taskService.createTask(taskDto));
-    }
+    @Autowired
+    private TaskServiceImpl taskService;
 
     @GetMapping
-    public ResponseEntity<List<TaskDto>> getAllTasks() {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Task>> getAllTasks() {
         return ResponseEntity.ok(taskService.getAllTasks());
     }
 
-    @GetMapping("/search/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(taskService.finById(id));
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('EDITOR') and #taskService.isUserAssigned(#id, principal))")
+    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+        Task task = taskService.getTaskById(id);
+        return ResponseEntity.ok(task);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<TaskDto>> getTasksByUserId(@PathVariable Long userId) {
-        return ResponseEntity.ok(taskService.getTasksByUserId(userId));
+    @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'EDITOR')")
+    public ResponseEntity<Task> createTask(@Valid @RequestBody Task task) {
+        Task createdTask = taskService.createTask(task);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @RequestBody TaskDto taskDto) {
-        return ResponseEntity.ok(taskService.updateTask(id, taskDto));
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('EDITOR') and #taskService.isUserAssigned(#id, principal))")
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @Valid @RequestBody Task task) {
+        Task updatedTask = taskService.updateTask(id, task);
+        return ResponseEntity.ok(updatedTask);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
 
-
-    @GetMapping("/search-users/{idTask}")
-    public ResponseEntity<?> finUsersByIdTask(@PathVariable Long idTask){
-        return ResponseEntity.ok(taskService.findUsersByIdTask(idTask));
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('EDITOR') and #userId == principal.id)")
+    public ResponseEntity<List<Task>> getTasksByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(taskService.getTasksByUserId(userId));
     }
-
 }

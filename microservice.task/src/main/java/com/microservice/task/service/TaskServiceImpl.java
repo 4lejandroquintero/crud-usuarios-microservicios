@@ -1,25 +1,17 @@
 package com.microservice.task.service;
 
-
-import com.microservice.task.dto.TaskDto;
 import com.microservice.task.entities.Task;
-import com.microservice.task.entities.TaskStatus;
+import com.microservice.task.exception.EntityNotFoundException;
 import com.microservice.task.persistence.ITaskRepository;
-import lombok.RequiredArgsConstructor;
 
-import com.microservice.task.client.UserClient;
-import com.microservice.task.dto.UserDto;
-import com.microservice.task.http.response.UsersByTaskResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
-@RequiredArgsConstructor
 public class TaskServiceImpl implements ITaskService {
 
 
@@ -27,101 +19,56 @@ public class TaskServiceImpl implements ITaskService {
     @Autowired
     private final ITaskRepository taskRepository;
 
+
     @Autowired
-    private UserClient userClient;
-
-
-    @Override
-    public TaskDto createTask(TaskDto taskDto) {
-        Task task = Task.builder()
-                .title(taskDto.getTitle())
-                .description(taskDto.getDescription())
-                .status(TaskStatus.ASIGNADA)
-                .userId(taskDto.getUserId())
-                .build();
-
-        Task savedTask = taskRepository.save(task);
-        return mapToDto(savedTask);
+    public TaskServiceImpl(ITaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
 
     @Override
-    public List<TaskDto> getAllTasks() {
-        Iterable<Task> tasks = taskRepository.findAll();
-        return StreamSupport.stream(tasks.spliterator(), false) // Convertimos Iterable a Stream
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
     }
 
     @Override
-    public TaskDto getTaskById(Long id) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tarea no encontrada con ID: " + id));
-        return mapToDto(task);
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with id: " + id));
     }
 
     @Override
-    public List<TaskDto> getTasksByUserId(Long userId) {
-        return taskRepository.findByUserId(userId)
-                .stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
+    public Task createTask(Task task) {
+        return taskRepository.save(task);
     }
 
     @Override
-    public TaskDto updateTask(Long id, TaskDto taskDto) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tarea no encontrada con ID: " + id));
+    public Task updateTask(Long id, Task task) {
+        Task existingTask = taskRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with id: " + id));
 
-        task.setTitle(taskDto.getTitle());
-        task.setDescription(taskDto.getDescription());
-        task.setStatus(taskDto.getStatus());
-
-        Task updatedTask = taskRepository.save(task);
-        return mapToDto(updatedTask);
+        existingTask.setTitle(task.getTitle());
+        existingTask.setDescription(task.getDescription());
+        existingTask.setStatus(task.getStatus());
+        return taskRepository.save(existingTask);
     }
 
     @Override
     public void deleteTask(Long id) {
         if (!taskRepository.existsById(id)) {
-            throw new RuntimeException("Tarea no encontrada con ID: " + id);
+            throw new EntityNotFoundException("Task not found with id: " + id);
         }
         taskRepository.deleteById(id);
     }
 
     @Override
-    public List<Task> findAll() {
-        return (List<Task>) taskRepository.findAll();
+    public List<Task> getTasksByUserId(Long userId) {
+        return taskRepository.findByAssignedUserId(userId);
     }
 
     @Override
-    public Task finById(Long id) {
-        return taskRepository.findById(id).orElseThrow();
+    public boolean isUserAssigned(Long taskId, Principal principal) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with id: " + taskId));
+        return task.getAssignedUserId().equals(Long.valueOf(principal.getName()));
     }
-
-    private TaskDto mapToDto(Task task) {
-        return TaskDto.builder()
-                .id(task.getId())
-                .title(task.getTitle())
-                .description(task.getDescription())
-                .status(task.getStatus())
-                .userId(task.getUserId())
-                .build();
-    }
-
-
-    @Override
-    public UsersByTaskResponse findUsersByIdTask(Long idTask) {
-        Task task = taskRepository.findById(idTask)
-                .orElseThrow(() -> new RuntimeException("Tarea no encontrada con ID: " + idTask));
-
-        // Obtener los usuarios con id y rol
-        List<UserDto> userDtoList = userClient.findAllUserByTask(idTask);
-
-        return UsersByTaskResponse.builder()
-                .title(task.getTitle())
-                .status(task.getStatus())
-                .userDTOList(userDtoList)
-                .build();
-    }
-
 }
