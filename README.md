@@ -1,6 +1,6 @@
 # CRUD de Usuarios con Microservicios
 
-Este proyecto es una aplicación basada en microservicios utilizando **Spring Boot**, **Spring Cloud Gateway** y **PostgreSQL**.
+Este proyecto es una aplicación basada en microservicios utilizando **Spring Boot**, **Spring Cloud** y **PostgreSQL**.
 
 ## Características:
 ✔️ Arquitectura basada en microservicios.  
