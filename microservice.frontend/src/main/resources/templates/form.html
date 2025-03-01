@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Formulario de Tarea</title>
+</head>
+<body>
+<h1 th:text="${task.id == null} ? 'Nueva Tarea' : 'Editar Tarea'"></h1>
+<form th:action="@{/tasks/save}" th:object="${task}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <label>Nombre:</label>
+    <input type="text" th:field="*{name}" required/>
+    <label>Estado:</label>
+    <select th:field="*{status}">
+        <option value="Pending">Pendiente</option>
+        <option value="InProgress">En Progreso</option>
+        <option value="Completed">Completada</option>
+    </select>
+    <button type="submit">Guardar</button>
+</form>
+<a href="/tasks">Volver</a>
+</body>
+</html>
