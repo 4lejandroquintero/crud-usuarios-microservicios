@@ -10,6 +10,7 @@
         <module name="microservice.eureka" />
         <module name="microservice.config" />
         <module name="microservice.task" />
+        <module name="microservice.frontend" />
         <module name="microservice.gateway" />
       </profile>
       <profile name="Annotation profile for PruebaMicroservices" enabled="true">
@@ -17,6 +18,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="microservice.user" />
@@ -32,6 +34,7 @@
       <module name="microservice.authsercvice" options="-parameters" />
       <module name="microservice.config" options="-parameters" />
       <module name="microservice.eureka" options="-parameters" />
+      <module name="microservice.frontend" options="-parameters" />
       <module name="microservice.gateway" options="-parameters" />
       <module name="microservice.oauth" options="-parameters" />
       <module name="microservice.task" options="-parameters" />

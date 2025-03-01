@@ -23,6 +23,7 @@
     <module>microservice.config</module>
     <module>microservice.user</module>
     <module>microservice.task</module>
+    <module>microservice.frontend</module>
   </modules>
 
   <properties>
